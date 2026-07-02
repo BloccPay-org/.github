@@ -1,0 +1,91 @@
+name: 🐛 Bug — customer-reported
+description: A user or customer reported something broken.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when the issue was reported by an external user, customer, or partner.
+        For issues you found internally, use "Bug — internal" instead.
+  - type: input
+    id: reporter
+    attributes:
+      label: Reported by
+      description: Customer / partner / user name (or Slack handle if internal-user-reported)
+      placeholder: e.g. Blockradar, or business admin at company X
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: Customer report
+      description: What did they tell us? Paste screenshots, message excerpts, or a link to the original report.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Numbered list.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: root_cause
+    attributes:
+      label: Root cause (fill in once known)
+      description: What's the underlying bug? File paths, function names welcome.
+    validations:
+      required: false
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who's affected and how badly? Estimate scope.
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - P0 — production-down / data loss / security
+        - P1 — customer-facing, no workaround
+        - P2 — customer-facing, workaround exists
+        - P3 — minor / cosmetic
+    validations:
+      required: true
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s) affected
+      description: Which team(s) own the fix?
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: Fix / linked PRs
+      description: Add task-list of PRs once open.
+      value: |
+        - [ ] PR link
+    validations:
+      required: false
+  - type: textarea
+    id: qa
+    attributes:
+      label: QA verification
+      description: Steps to verify the fix landed correctly.
+      value: |
+        - [ ]
+    validations:
+      required: false

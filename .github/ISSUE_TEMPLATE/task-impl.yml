@@ -1,0 +1,53 @@
+name: 🛠 Task — implementation
+description: Bounded implementation work with a defined scope (integration, refactor, feature-slice).
+title: "[Task] "
+labels: ["task"]
+body:
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What are we building or changing? Include subsections if the work spans multiple concerns.
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: Explicitly what this ticket does NOT cover — helps prevent scope creep.
+    validations:
+      required: false
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: What must be done or decided before / alongside this?
+    validations:
+      required: false
+  - type: textarea
+    id: cross_refs
+    attributes:
+      label: Cross-refs
+      description: Related tickets in this or other repos (use `org/repo#N` for cross-repo).
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s)
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true

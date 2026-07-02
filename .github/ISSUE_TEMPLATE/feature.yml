@@ -1,0 +1,53 @@
+name: ✨ Feature
+description: New product capability with rationale and architectural decisions.
+title: "[Feature] "
+labels: ["feature"]
+body:
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision
+      description: What are we building? One-sentence summary of the call.
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why now? What problem does it solve? What alternatives were considered?
+    validations:
+      required: true
+  - type: textarea
+    id: architecture
+    attributes:
+      label: Architecture
+      description: High-level approach. Provider choices, data model changes, key abstractions.
+    validations:
+      required: true
+  - type: textarea
+    id: pre_commit
+    attributes:
+      label: Pre-commit checks
+      description: What must be validated before starting?
+      value: |
+        - [ ]
+    validations:
+      required: false
+  - type: textarea
+    id: related
+    attributes:
+      label: Related
+      description: Related tickets, PRs, prior decisions.
+    validations:
+      required: false
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s)
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true

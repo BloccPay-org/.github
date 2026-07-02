@@ -1,0 +1,47 @@
+name: ⚙️ Task — infra / devops
+description: Deployment, CI/CD, secrets, monitoring, infra migration.
+title: "[Infra] "
+labels: ["task", "devops"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: What infra change? Include current state → target state.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: What problem does this solve or unblock?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Environments affected (dev / staging / prod), specific systems.
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+    validations:
+      required: false
+  - type: textarea
+    id: rollback
+    attributes:
+      label: Rollback plan
+      description: If this goes wrong, how do we get back to a working state?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ]
+    validations:
+      required: true

@@ -1,0 +1,38 @@
+name: 🧹 Chore
+description: Small ops / cleanup / tooling work. Doesn't need scope docs.
+title: "[Chore] "
+labels: ["chore"]
+body:
+  - type: input
+    id: what
+    attributes:
+      label: What
+      description: One line.
+    validations:
+      required: true
+  - type: input
+    id: why
+    attributes:
+      label: Why
+      description: One line.
+    validations:
+      required: true
+  - type: textarea
+    id: done_when
+    attributes:
+      label: Done when
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s)
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true

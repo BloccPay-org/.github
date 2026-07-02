@@ -1,0 +1,71 @@
+name: 🐞 Bug — internal
+description: Something broken that the team caught internally (not customer-reported).
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when the team found the issue internally (log, monitoring, code review, dogfooding).
+        For customer-reported issues, use "Bug — customer-reported" instead.
+  - type: textarea
+    id: description
+    attributes:
+      label: What's broken?
+      description: One-paragraph summary. Include monitoring links or log excerpts if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: root_cause
+    attributes:
+      label: Root cause (fill in once known)
+      description: What's the underlying bug? File paths, function names welcome.
+    validations:
+      required: false
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who's affected and how badly?
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - P0 — production-down / data loss / security
+        - P1 — customer-facing (even if not yet reported)
+        - P2 — internal / workaround exists
+        - P3 — minor / cleanup
+    validations:
+      required: true
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s) affected
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: Fix / linked PRs
+      value: |
+        - [ ] PR link
+    validations:
+      required: false

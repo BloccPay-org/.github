@@ -1,0 +1,57 @@
+name: 🎨 Design
+description: Design deliverable — UI/UX, graphics, DB schema, or system design.
+title: "[Design] "
+labels: ["design"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of design
+      options:
+        - UI / UX (Figma)
+        - Graphics / brand asset
+        - Database schema
+        - System / API design
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: brief
+    attributes:
+      label: Brief
+      description: What are we designing? Include audience and use case.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Brand rules, existing patterns, technical constraints.
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Figma links, existing tickets, sibling designs.
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s)
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true

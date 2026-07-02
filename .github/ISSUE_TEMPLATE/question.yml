@@ -1,0 +1,35 @@
+name: ❓ Question / Discussion
+description: Open a discussion that needs a trail (not something for Slack).
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What led to this? Why does it need a durable record instead of Slack?
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options being considered
+    validations:
+      required: false
+  - type: checkboxes
+    id: workstream
+    attributes:
+      label: Workstream(s)
+      options:
+        - label: eng
+        - label: devops
+        - label: product
+        - label: design
+    validations:
+      required: true
