@@ -53,4 +53,3 @@ Example: parent bug in `BloccPay-Backend-V1#759`, backend PR `#760`, frontend PR
 
 All issues go on [project #2 "Bloccpay Development"](https://github.com/orgs/BloccPay-org/projects/2). Status, Sprint, and Priority live there.
 
-<!-- TODO: link to internal onboarding doc once it exists -->
