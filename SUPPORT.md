@@ -23,4 +23,4 @@ If you're looking at one of our repositories:
 
 ## For hiring
 
-- **Careers:** careers@bloccpay.com — or watch for `hiring` labeled issues in [bloccpay-projects](https://github.com/BloccPay-org/bloccpay-projects).
+- **Careers:** careers@bloccpay.com

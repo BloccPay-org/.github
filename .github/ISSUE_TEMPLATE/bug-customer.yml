@@ -13,7 +13,7 @@ body:
     attributes:
       label: Reported by
       description: Customer / partner / user name (or Slack handle if internal-user-reported)
-      placeholder: e.g. Blockradar, or business admin at company X
+      placeholder: e.g. customer or partner name, or the reporting user's role
     validations:
       required: true
   - type: textarea

@@ -21,7 +21,7 @@ Templates live in `.github/ISSUE_TEMPLATE/` of each repo — the org falls back 
 
 ## Branch and commit conventions
 
-- Branch names: `<type>/<short-slug>` — e.g. `fix/payroll-approval-email-broken-link`, `feat/dojah-liveness`, `chore/rename-labels`.
+- Branch names: `<type>/<short-slug>` — e.g. `fix/payroll-approval-email-broken-link`, `feat/liveness-check`, `chore/rename-labels`.
 - Commit messages: conventional-style prefix — `fix:`, `feat:`, `chore:`, `refactor:`, `docs:`, `test:`, `wip:`. Keep the subject under ~70 chars.
 - One logical change per PR. If a change touches multiple concerns, split it.
 
@@ -41,15 +41,15 @@ Some work spans multiple repos (frontend + backend, or backend + cms). Conventio
 - Each child PR references the parent with `Fixes org/repo#<parent>`.
 - Parent closes only after all children merge.
 
-Example: parent bug in `BloccPay-Backend-V1#759`, backend PR `#760`, frontend PR `bloccpay-web-app#391`.
+Example: parent bug in `backend-repo#123`, backend PR `#124`, frontend PR `frontend-repo#456`.
 
 ## Labels
 
 - **Type labels** are applied by issue templates: `bug`, `task`, `feature`, `chore`, `design`, `spike`, `question`, `compliance`, `hiring`, `partnerships`.
 - **Workstream labels** are applied by the `apply-workstream-labels` workflow based on your template checkbox selection: `eng`, `devops`, `product`, `design`, `marketing`, `ops`.
-- **Priority** is a project-board field, not a label — set it on [Bloccpay Development](https://github.com/orgs/BloccPay-org/projects/2) directly.
+- **Priority** is a project-board field, not a label — set it on the Bloccpay Development project board (internal) directly.
 
 ## Project board
 
-All issues go on [project #2 "Bloccpay Development"](https://github.com/orgs/BloccPay-org/projects/2). Status, Sprint, and Priority live there.
+All issues go on the "Bloccpay Development" project board (internal — org members find it under the org's Projects tab). Status, Sprint, and Priority live there.
 
