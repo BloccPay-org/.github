@@ -6,10 +6,7 @@ Thank you for taking the time to help keep Bloccpay and its users safe.
 
 **Please do NOT report security issues through public GitHub issues, discussions, or pull requests.**
 
-Report vulnerabilities to: **`security@bloccpay.com`** <!-- TODO: confirm this is the right address -->
-
-If you'd like to encrypt your report, our PGP key is available at: <!-- TODO: add PGP fingerprint or link, or delete this line if not applicable -->
-`<PGP_FINGERPRINT_HERE>`
+Report vulnerabilities to: **`security@bloccpay.com`**
 
 Please include as much of the following as you can:
 
@@ -32,20 +29,20 @@ This helps us triage your report faster.
 
 ## Scope
 
-**In scope** <!-- TODO: confirm this list matches what we want researchers looking at -->:
+**In scope:**
 
-- All private and public repositories under [github.com/BloccPay-org](https://github.com/BloccPay-org)
-- Production web app (`https://app.bloccpay.com` — TODO: confirm domain)
-- Production API (`https://api.bloccpay.com` — TODO: confirm domain)
-- Marketing / website (`https://bloccpay.com`)
+- All repositories under [github.com/BloccPay-org](https://github.com/BloccPay-org)
+- Production web app: `https://app.bloccpay.com`
+- Production API: `https://api.bloccpay.com`
+- Website: `https://www.bloccpay.com`
 - Backoffice / admin surface (auth boundary, session handling, IDOR)
 
-**Out of scope**:
+**Out of scope:**
 
 - Denial-of-service testing against production
 - Physical attacks against Bloccpay staff or premises
 - Social-engineering of Bloccpay staff, users, or partners
-- Third-party services (Dojah, Blockradar, Bridge, Paycrest, Onramp.money, Stellar SDK) — report directly to those providers
+- Third-party services (identity, custody, and payment providers) — report directly to those providers
 - Reports from automated scanners without validated impact
 - Missing security headers with no proven exploit chain
 
@@ -60,11 +57,9 @@ We will not pursue legal action against researchers who:
 
 ## Recognition
 
-We do not currently run a paid bug bounty program. <!-- TODO: if that changes, edit this section -->
+We do not currently run a paid bug bounty program.
 We are happy to acknowledge researchers in release notes / this file (with permission) once an issue is fixed.
-
-<!-- TODO: consider adding hall of fame section once we have real reporters -->
 
 ---
 
-*Last updated: 2026-07-02*
+*Last updated: 2026-07-03*

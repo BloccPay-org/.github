@@ -1,42 +1,24 @@
 # Bloccpay
 
-<!-- TODO: one-line tagline. Something like "Stablecoin-powered payroll and payments for global teams." Do not overclaim non-custodial framing until the non-custodial flow is fully shipped and settled. -->
+**Borderless payroll & invoicing — pay global talent in stablecoins, in minutes.**
 
-**Bloccpay** is a payroll and payments platform for businesses paying talent across borders.
-<!-- TODO: expand this paragraph. What we do, who we do it for, why it exists. Keep concrete. -->
+Bloccpay is a crypto-powered payroll and invoicing platform for global businesses and the talent they work with. Businesses automate payroll and pay teams across multiple regions simultaneously in stablecoins like USDC; talent receives payment in minutes and preserves income against local currency depreciation. We focus on the corridors where traditional payment infrastructure fails remote workers — high fees, long delays, and value lost in transit.
 
-## What we're working on
+## Public surfaces
 
-<!-- TODO: 3-5 short bullets, at a high level. Examples that can go here once shipped: -->
-<!-- - V2 web app rollout -->
-<!-- - Bidirectional fiat rails (Bridge, Paycrest, Onramp, Blockradar) -->
-<!-- - Non-custodial wallet architecture -->
-<!-- - KYC + AML compliance via Dojah -->
-
-## Repositories
-
-Most of our code is private. If you're a collaborator, you'll see the full list on this org page.
-
-Public-facing surfaces:
-
-- **Product:** https://app.bloccpay.com <!-- TODO: confirm -->
-- **Website:** https://bloccpay.com <!-- TODO: confirm -->
+- **Product:** https://app.bloccpay.com
+- **Website:** https://www.bloccpay.com
 
 ## We're hiring
 
-<!-- TODO: list current roles. As of writing: -->
-<!-- - Product Manager -->
-<!-- - Marketing Associate -->
-<!-- - Business Development -->
+- Product Manager
+- Marketing Associate
+- Business Development
 
-If interested, reach out via <!-- TODO: careers email or link -->.
+Interested? Reach out: **careers@bloccpay.com**
 
 ## Getting in touch
 
-- **Product support:** support@bloccpay.com <!-- TODO: confirm -->
-- **Security disclosures:** see our [Security Policy](./SECURITY.md)
-- **Partnerships:** partnerships@bloccpay.com <!-- TODO: confirm -->
-
----
-
-*This README powers `github.com/BloccPay-org`. Edit in [.github/profile/README.md](./profile/README.md).*
+- **Product support:** support@bloccpay.com
+- **Security disclosures:** see our [Security Policy](https://github.com/BloccPay-org/.github/blob/main/SECURITY.md)
+- **Partnerships:** partnerships@bloccpay.com
