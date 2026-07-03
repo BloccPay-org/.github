@@ -31,11 +31,11 @@ This helps us triage your report faster.
 
 **In scope:**
 
-- All repositories under [github.com/BloccPay-org](https://github.com/BloccPay-org)
 - Production web app: `https://app.bloccpay.com`
-- Production API: `https://api.bloccpay.com`
+- The production API backing the web app
 - Website: `https://www.bloccpay.com`
 - Backoffice / admin surface (auth boundary, session handling, IDOR)
+- Public repositories under [github.com/BloccPay-org](https://github.com/BloccPay-org)
 
 **Out of scope:**
 
