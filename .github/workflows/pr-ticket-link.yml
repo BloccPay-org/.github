@@ -1,0 +1,38 @@
+name: PR ticket link
+
+# Reusable workflow. Each repo calls it on its pull requests. It warns, and never
+# fails, when the description names no ticket with "Closes #N" (or Fixes /
+# Resolves). The board moves the tickets a merged pull request names to Testing/QA,
+# using the same pattern (bloccpay-projects, scripts/board_sync.py).
+
+on:
+  workflow_call:
+
+permissions: {}
+
+jobs:
+  ticket-link:
+    # Promotion pull requests carry many tickets' work and name none.
+    if: github.head_ref != 'dev' && github.head_ref != 'staging' && github.head_ref != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Look for the ticket this pull request closes
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          python3 - <<'EOF'
+          import os, re
+          body = re.sub(r"<!--.*?-->", "", os.environ.get("BODY") or "", flags=re.DOTALL)
+          closing = re.compile(
+              r"\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?):?[ \t]+"
+              r"(?:https://github\.com/[\w.-]+/[\w.-]+/issues/\d+|(?:[\w.-]+/[\w.-]+)?#\d+)",
+              re.IGNORECASE,
+          )
+          if closing.search(body):
+              print("This pull request names the ticket it closes.")
+          else:
+              print('::warning title=No ticket named::Add "Closes #<number>" to the description, or '
+                    '"Closes BloccPay-org/<repo>#<number>" for a ticket in another repo. When this '
+                    'merges, the board moves that ticket to Testing/QA.')
+          EOF
