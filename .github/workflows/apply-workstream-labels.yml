@@ -5,6 +5,11 @@ name: Apply workstream labels
 # templates in .github/ISSUE_TEMPLATE/*.yml) and applies the matching workstream
 # labels (eng / devops / product / design / marketing / ops).
 #
+# Two more rules add eng:
+# - every issue opened in a repo that carries the repo topic `eng` (the engineering
+#   repos), whatever its boxes say;
+# - every issue with devops ticked, because devops work is engineering work.
+#
 # Assumes the templates use `id: workstream` on a `checkboxes` field. GitHub
 # renders that as a `### Workstream(s)` section with `- [x] <name>` / `- [ ] <name>`
 # lines.
@@ -33,6 +38,7 @@ jobs:
 
             const body = issue.body || '';
             const KNOWN = ['eng', 'devops', 'product', 'design', 'marketing', 'ops'];
+            const checked = new Set();
 
             // Find the Workstream section. GitHub renders form checkboxes as:
             //   ### Workstream(s)
@@ -46,33 +52,43 @@ jobs:
             // or end of body.
             const sectionRe = /###\s+Workstream\(s\)[^\n]*\n([\s\S]*?)(?=\n###\s|$)/i;
             const sectionMatch = body.match(sectionRe);
-            if (!sectionMatch) {
-              core.info('No Workstream section found in issue body; nothing to apply.');
-              return;
-            }
-
-            const section = sectionMatch[1];
-            const checked = [];
-            // Match `- [x] <name>` (case-insensitive on the X).
-            const lineRe = /-\s*\[[xX]\]\s*([a-z]+)/g;
-            let m;
-            while ((m = lineRe.exec(section)) !== null) {
-              const name = m[1].toLowerCase();
-              if (KNOWN.includes(name)) {
-                checked.push(name);
+            if (sectionMatch) {
+              // Match `- [x] <name>` (case-insensitive on the X).
+              const lineRe = /-\s*\[[xX]\]\s*([a-z]+)/g;
+              let m;
+              while ((m = lineRe.exec(sectionMatch[1])) !== null) {
+                const name = m[1].toLowerCase();
+                if (KNOWN.includes(name)) {
+                  checked.add(name);
+                }
               }
+            } else {
+              core.info('No Workstream section found in issue body.');
             }
 
-            if (checked.length === 0) {
-              core.info('No workstream boxes checked; nothing to apply.');
+            if (checked.has('devops')) {
+              checked.add('eng');
+            }
+
+            const { data: topics } = await github.rest.repos.getAllTopics({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            if ((topics.names || []).includes('eng')) {
+              checked.add('eng');
+            }
+
+            const labels = [...checked];
+            if (labels.length === 0) {
+              core.info('No workstream boxes checked and not an engineering repo; nothing to apply.');
               return;
             }
 
-            core.info(`Checked workstreams: ${checked.join(', ')}`);
+            core.info(`Workstream labels: ${labels.join(', ')}`);
 
             // Ensure each label exists in the repo before applying. If missing,
             // create with the standard grey workstream color.
-            for (const name of checked) {
+            for (const name of labels) {
               try {
                 await github.rest.issues.getLabel({
                   owner: context.repo.owner,
@@ -99,7 +115,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.number,
-              labels: checked,
+              labels,
             });
 
-            core.info(`Applied labels: ${checked.join(', ')} on issue #${issue.number}`);
+            core.info(`Applied labels: ${labels.join(', ')} on issue #${issue.number}`);
