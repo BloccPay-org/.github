@@ -2,6 +2,7 @@ name: 🛠 Task — implementation
 description: Bounded implementation work with a defined scope (integration, refactor, feature-slice).
 title: "[Task] "
 labels: ["task"]
+projects: ["BloccPay-org/2"]
 body:
   - type: textarea
     id: scope

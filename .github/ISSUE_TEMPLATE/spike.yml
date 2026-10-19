@@ -2,6 +2,7 @@ name: 🔬 Spike / Investigation
 description: Time-boxed research to answer an open question. No commitment to ship.
 title: "[Spike] "
 labels: ["spike"]
+projects: ["BloccPay-org/2"]
 body:
   - type: textarea
     id: question
