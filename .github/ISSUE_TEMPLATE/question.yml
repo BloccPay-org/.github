@@ -2,6 +2,7 @@ name: ❓ Question / Discussion
 description: Open a discussion that needs a trail (not something for Slack).
 title: "[Question] "
 labels: ["question"]
+projects: ["BloccPay-org/2"]
 body:
   - type: textarea
     id: question

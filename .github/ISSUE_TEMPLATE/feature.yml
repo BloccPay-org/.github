@@ -2,6 +2,7 @@ name: ✨ Feature
 description: New product capability with rationale and architectural decisions.
 title: "[Feature] "
 labels: ["feature"]
+projects: ["BloccPay-org/2"]
 body:
   - type: textarea
     id: decision

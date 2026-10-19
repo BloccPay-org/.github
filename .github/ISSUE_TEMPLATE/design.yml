@@ -2,6 +2,7 @@ name: 🎨 Design
 description: Design deliverable — UI/UX, graphics, DB schema, or system design.
 title: "[Design] "
 labels: ["design"]
+projects: ["BloccPay-org/2"]
 body:
   - type: dropdown
     id: kind

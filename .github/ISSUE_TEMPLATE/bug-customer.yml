@@ -2,6 +2,7 @@ name: 🐛 Bug — customer-reported
 description: A user or customer reported something broken.
 title: "[Bug] "
 labels: ["bug"]
+projects: ["BloccPay-org/2"]
 body:
   - type: markdown
     attributes:

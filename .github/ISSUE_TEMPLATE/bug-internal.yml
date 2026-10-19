@@ -2,6 +2,7 @@ name: 🐞 Bug — internal
 description: Something broken that the team caught internally (not customer-reported).
 title: "[Bug] "
 labels: ["bug"]
+projects: ["BloccPay-org/2"]
 body:
   - type: markdown
     attributes:
