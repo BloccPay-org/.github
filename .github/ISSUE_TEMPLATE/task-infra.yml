@@ -2,6 +2,7 @@ name: ⚙️ Task — infra / devops
 description: Deployment, CI/CD, secrets, monitoring, infra migration.
 title: "[Infra] "
 labels: ["task", "devops"]
+projects: ["BloccPay-org/2"]
 body:
   - type: textarea
     id: what

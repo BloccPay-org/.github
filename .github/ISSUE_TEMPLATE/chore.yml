@@ -2,6 +2,7 @@ name: 🧹 Chore
 description: Small ops / cleanup / tooling work. Doesn't need scope docs.
 title: "[Chore] "
 labels: ["chore"]
+projects: ["BloccPay-org/2"]
 body:
   - type: input
     id: what
