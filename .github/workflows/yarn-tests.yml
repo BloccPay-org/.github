@@ -1,0 +1,41 @@
+name: Tests
+
+# Reusable workflow. The web app and the backoffice call it on their pull requests. It runs
+# `yarn test` on the Node version in the caller's `.nvmrc`. The caller passes
+# CONTRACT_REPO_READ_TOKEN, which installs the private contract package through the caller's
+# `scripts/contract-git-auth.sh`. The caller keeps its own concurrency setting: one set here
+# as well would make the two wait on each other.
+
+on:
+  workflow_call:
+    secrets:
+      CONTRACT_REPO_READ_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # The workflow token cannot read bloccpay-contract. Leaving it in git config makes yarn use it.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Install
+        env:
+          CONTRACT_REPO_READ_TOKEN: ${{ secrets.CONTRACT_REPO_READ_TOKEN }}
+        run: |
+          sh scripts/contract-git-auth.sh
+          yarn install --frozen-lockfile
+
+      - name: Run the tests
+        run: yarn test
