@@ -1,15 +1,15 @@
 """Fails a pull request whose added lines, title, description or commit messages name a team member.
 
-Reads the team from the TEAM_MEMBERS environment variable, the organisation variable of the same name: a JSON object
+Reads the team from the TEAM_MEMBERS environment variable, which holds the organisation secret of the same name: a JSON object
 of GitHub login to that person's entry, for example
 
     {"adalogin": {"slack": "U0123ABCD", "names": ["Ada", "Lovelace"]}}
 
-Each login and each of its names is refused. The board sync reads the same variable for Slack mentions, so `slack` is
+Each login and each of its names is refused. The board sync reads the same secret for Slack mentions, so `slack` is
 the person's Slack member ID; this check ignores it. A word matches whole and in any letter case, so
 `ada@example.com` matches `Ada` and `Adaptive` does not. A name that is also an everyday word or code is written
 `exact:Will`, and then matches only in that letter case, so `will` and `WILL` pass. Adding a person is one entry in the
-variable. An unset, unreadable or empty TEAM_MEMBERS fails the check: nothing could be checked.
+secret. An unset, unreadable or empty TEAM_MEMBERS fails the check: nothing could be checked.
 
 Run inside a checkout that holds both commits:
     python3 check.py --base <sha> --head <sha>

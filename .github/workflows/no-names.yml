@@ -1,18 +1,18 @@
 name: No names
 
-# Reusable workflow. Each repo calls it on its pull requests, passing the TEAM_MEMBERS organisation variable. It fails
+# Reusable workflow. Each repo calls it on its pull requests, passing the TEAM_MEMBERS organisation secret. It fails
 # when a line the pull request adds, its title, its description or one of its commit messages contains a team member's
 # GitHub login or name as a whole word, and prints each hit. The deploy workflows' map of logins to Slack mentions
-# (`name="..."` lines under .github/workflows) is allowed. The list lives in the organisation variable, never in this
-# public repo: scripts/no-names/check.py describes its shape, and adding a person is one entry there.
+# (`name="..."` lines under .github/workflows) is allowed. The list lives in the organisation secret, never in this
+# public repo, and a secret is masked in the job log: scripts/no-names/check.py describes its shape, and adding a person is
+# one entry there.
 
 on:
   workflow_call:
-    inputs:
-      team:
-        description: The TEAM_MEMBERS organisation variable.
+    secrets:
+      team_members:
+        description: The TEAM_MEMBERS organisation secret.
         required: true
-        type: string
 
 permissions:
   contents: read
@@ -35,7 +35,7 @@ jobs:
           sparse-checkout: scripts/no-names
       - name: Look for names
         env:
-          TEAM_MEMBERS: ${{ inputs.team }}
+          TEAM_MEMBERS: ${{ secrets.team_members }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
           BASE: ${{ github.event.pull_request.base.sha }}
