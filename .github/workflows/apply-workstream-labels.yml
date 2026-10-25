@@ -1,0 +1,121 @@
+name: Apply workstream labels
+
+# Reusable workflow. Called by every repo when an issue is opened.
+# Parses the "Workstream(s)" section of the issue body (populated by our YAML form
+# templates in .github/ISSUE_TEMPLATE/*.yml) and applies the matching workstream
+# labels (eng / devops / product / design / marketing / ops).
+#
+# Two more rules add eng:
+# - every issue opened in a repo that carries the repo topic `eng` (the engineering
+#   repos), whatever its boxes say;
+# - every issue with devops ticked, because devops work is engineering work.
+#
+# Assumes the templates use `id: workstream` on a `checkboxes` field. GitHub
+# renders that as a `### Workstream(s)` section with `- [x] <name>` / `- [ ] <name>`
+# lines.
+#
+# Missing labels are created on-the-fly with the standard grey color (#cccccc).
+
+on:
+  workflow_call:
+
+permissions:
+  issues: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse body + apply labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (!issue) {
+              core.info('No issue payload; skipping.');
+              return;
+            }
+
+            const body = issue.body || '';
+            const KNOWN = ['eng', 'devops', 'product', 'design', 'marketing', 'ops'];
+            const checked = new Set();
+
+            // Find the Workstream section. GitHub renders form checkboxes as:
+            //   ### Workstream(s)
+            //   ### Workstream(s) affected
+            //
+            //   - [X] eng
+            //   - [ ] devops
+            //   ...
+            //
+            // Match everything from the first Workstream header until the next `###`
+            // or end of body.
+            const sectionRe = /###\s+Workstream\(s\)[^\n]*\n([\s\S]*?)(?=\n###\s|$)/i;
+            const sectionMatch = body.match(sectionRe);
+            if (sectionMatch) {
+              // Match `- [x] <name>` (case-insensitive on the X).
+              const lineRe = /-\s*\[[xX]\]\s*([a-z]+)/g;
+              let m;
+              while ((m = lineRe.exec(sectionMatch[1])) !== null) {
+                const name = m[1].toLowerCase();
+                if (KNOWN.includes(name)) {
+                  checked.add(name);
+                }
+              }
+            } else {
+              core.info('No Workstream section found in issue body.');
+            }
+
+            if (checked.has('devops')) {
+              checked.add('eng');
+            }
+
+            const { data: topics } = await github.rest.repos.getAllTopics({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            if ((topics.names || []).includes('eng')) {
+              checked.add('eng');
+            }
+
+            const labels = [...checked];
+            if (labels.length === 0) {
+              core.info('No workstream boxes checked and not an engineering repo; nothing to apply.');
+              return;
+            }
+
+            core.info(`Workstream labels: ${labels.join(', ')}`);
+
+            // Ensure each label exists in the repo before applying. If missing,
+            // create with the standard grey workstream color.
+            for (const name of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                });
+              } catch (err) {
+                if (err.status === 404) {
+                  core.info(`Label '${name}' missing; creating.`);
+                  await github.rest.issues.createLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name,
+                    color: 'cccccc',
+                    description: `Workstream: ${name}`,
+                  });
+                } else {
+                  throw err;
+                }
+              }
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels,
+            });
+
+            core.info(`Applied labels: ${labels.join(', ')} on issue #${issue.number}`);
