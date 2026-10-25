@@ -1,0 +1,43 @@
+name: No names
+
+# Reusable workflow. Each repo calls it on its pull requests, passing the TEAM_MEMBERS organisation variable. It fails
+# when a line the pull request adds, its title, its description or one of its commit messages contains a team member's
+# GitHub login or name as a whole word, and prints each hit. The deploy workflows' map of logins to Slack mentions
+# (`name="..."` lines under .github/workflows) is allowed. The list lives in the organisation variable, never in this
+# public repo: scripts/no-names/check.py describes its shape, and adding a person is one entry there.
+
+on:
+  workflow_call:
+    inputs:
+      team:
+        description: The TEAM_MEMBERS organisation variable.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  no-names:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the pull request with its history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check out the check
+        uses: actions/checkout@v4
+        with:
+          repository: BloccPay-org/.github
+          ref: main
+          path: .no-names
+          sparse-checkout: scripts/no-names
+      - name: Look for names
+        env:
+          TEAM_MEMBERS: ${{ inputs.team }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python3 .no-names/scripts/no-names/check.py --base "$BASE" --head "$HEAD"

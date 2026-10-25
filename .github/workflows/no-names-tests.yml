@@ -1,0 +1,21 @@
+name: No names tests
+
+# Runs the names check's own cases on a pull request into this repo that changes the check or its workflow.
+on:
+  pull_request:
+    paths:
+      - "scripts/no-names/**"
+      - ".github/workflows/no-names.yml"
+      - ".github/workflows/no-names-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the cases
+        run: bash scripts/no-names/test-check.sh
