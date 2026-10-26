@@ -99,6 +99,21 @@ PR_TITLE="t" PR_BODY=$'Closes #1\n\nAs Ada asked.' expect "a name in the descrip
 new_repo; printf 'const b = 2;\n' >> src/a.ts; commit $'add b\n\nAda asked for it.'
 PR_TITLE="t" PR_BODY="b" expect "a name in a commit message fails" fail "commit "
 
+new_repo; printf 'const b = 2;\n' >> src/a.ts; commit "add b"
+PR_TITLE="t" PR_BODY=$'Closes #1\n\n@AdaLogin please review' expect "a description line addressing someone by @login passes" pass "no names"
+team_json='{"AdaLogin": {"names": ["Ada"]}}' PR_TITLE="t" PR_BODY="@adalogin please review" expect "an @login matches a login written in another case" pass "no names"
+PR_TITLE="t" PR_BODY="thanks Ada (@adalogin)" expect "a description line with an @login and a name fails" fail "description:1: thanks Ada (@adalogin)"
+PR_TITLE="t" PR_BODY="@Ada please review" expect "a name written as an @mention fails" fail "description:1: @Ada please review"
+PR_TITLE="t" PR_BODY="write to ada@example.com" expect "an email in the description fails" fail "description:1: write to ada@example.com"
+PR_TITLE="t" PR_BODY="write to ops@adalogin.dev" expect "an address at a login's domain fails" fail "description:1: write to ops@adalogin.dev"
+PR_TITLE="chore: for @adalogin" PR_BODY="b" expect "an @login in the title fails" fail "title: chore: for @adalogin"
+
+new_repo; printf 'const b = 2;\n' >> src/a.ts; commit $'add b\n\nfor @adalogin'
+PR_TITLE="t" PR_BODY="b" expect "an @login in a commit message fails" fail ":3: for @adalogin"
+
+new_repo; printf '// ask @adalogin\n' >> src/a.ts; commit "add note"
+PR_TITLE="t" PR_BODY="b" expect "an @login on an added line fails" fail "src/a.ts:3: // ask @adalogin"
+
 new_repo; printf 'const b = 2;\n' >> src/a.ts; commit "add b"; git mv src/a.ts "src/a b.ts" && printf 'const ada = 3;\n' >> "src/a b.ts"; commit "move"
 PR_TITLE="t" PR_BODY="b" expect "a name in a file whose path has a space fails" fail "src/a b.ts:"
 
@@ -115,6 +130,6 @@ team_json='["Ada"]' PR_TITLE="t" PR_BODY="b" expect "a TEAM_MEMBERS that is not 
 team_json='{}' PR_TITLE="t" PR_BODY="b" expect "an empty TEAM_MEMBERS fails" fail "TEAM_MEMBERS names nobody, so nothing can be checked"
 team_json='{"adalogin": {"names": "Ada"}}' PR_TITLE="t" PR_BODY="b" expect "names that are not a list fail" fail "TEAM_MEMBERS: the names of adalogin are not a list"
 
-expected=27
+expected=36
 echo "cases=$cases failures=$failures expected=$expected"
 [ "$failures" = 0 ] && [ "$cases" = "$expected" ]

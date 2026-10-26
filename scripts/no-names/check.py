@@ -11,6 +11,11 @@ the person's Slack member ID; this check ignores it. A word matches whole and in
 `exact:Will`, and then matches only in that letter case, so `will` and `WILL` pass. Adding a person is one entry in the
 secret. An unset, unreadable or empty TEAM_MEMBERS fails the check: nothing could be checked.
 
+A description may address a team member by @login, the way a review request does: before a description line is
+searched, each `@` followed by a team login, in any letter case, is removed. So `@adalogin please review` passes, while
+`thanks Ada (@adalogin)` still fails on the name, `@Ada` fails because Ada is a name and not a login, and an email such
+as `ada@example.com` still fails. Titles, added lines and commit messages are searched as written.
+
 Run inside a checkout that holds both commits:
     python3 check.py --base <sha> --head <sha>
 with TEAM_MEMBERS, PR_TITLE and PR_BODY in the environment. Exits 1 and prints each hit, or prints "no names".
@@ -26,10 +31,12 @@ import sys
 SKIPPED_FILES = re.compile(r"(^|/)(package-lock\.json|yarn\.lock|pnpm-lock\.yaml|[^/]*\.lock)$")
 # The deploy workflows map GitHub logins to Slack mentions, so their `name="..."` lines need names.
 SLACK_MAP_FILE = re.compile(r"^\.github/workflows/[^/]+\.ya?ml$")
+# An @mention: an `@` that does not follow a word or a dot (so not the `@` of an email address), then a login.
+MENTION = re.compile(r"(?<![A-Za-z0-9_.])@([A-Za-z0-9-]+)")
 
 
 def read_names(raw):
-    """Returns (words matched in any letter case, words matched only as written) from the TEAM_MEMBERS JSON."""
+    """Returns (words matched in any letter case, words matched only as written, logins) from the TEAM_MEMBERS JSON."""
     try:
         team = json.loads(raw or "")
     except ValueError:
@@ -51,7 +58,7 @@ def read_names(raw):
                 any_case.append(name)
     if not any_case and not exact:
         sys.exit("TEAM_MEMBERS names nobody, so nothing can be checked")
-    return any_case, exact
+    return any_case, exact, list(team)
 
 
 def whole_words(words, flags=0):
@@ -62,11 +69,16 @@ def whole_words(words, flags=0):
 
 
 class Names:
-    def __init__(self, any_case, exact):
+    def __init__(self, any_case, exact, logins):
         self.patterns = [p for p in (whole_words(any_case, re.IGNORECASE), whole_words(exact)) if p]
+        self.logins = {login.lower() for login in logins}
 
     def search(self, text):
         return any(p.search(text) for p in self.patterns)
+
+    def without_mentions(self, text):
+        """The text with each @mention of a team login removed; any other @word is left to be searched."""
+        return MENTION.sub(lambda m: "" if m.group(1).lower() in self.logins else m.group(0), text)
 
 
 def git(*args):
@@ -125,7 +137,7 @@ def find_hits(names, base, head, title, body):
     if names.search(title):
         hits.append(f"title: {title.strip()}")
     for number, text in enumerate(body.splitlines(), 1):
-        if names.search(text):
+        if names.search(names.without_mentions(text)):
             hits.append(f"description:{number}: {text.strip()}")
     for sha, message in commit_messages(base, head):
         for number, text in enumerate(message.splitlines(), 1):
